@@ -7,11 +7,15 @@ void LCDinit();
 
 void LCDclear();
 
+void cursorToLineTwo();
+
+void cursorToLineOne();
+
 void writeChar(char letter);
 
-void createString(char * string);
+void createString(char string[], int stringLength);
 
-void scrollLCD(char * string1, char * string2);
+void scrollLCD(char  string[], int stringLength);
 
 void delayMicro();
 void delayMilli();
