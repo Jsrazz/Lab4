@@ -1,6 +1,7 @@
 /*
- *
- *
+ *Author C2C Rasmussen
+ * Date Oct 28 13
+ *defines methods
  *
  *
  */
@@ -16,7 +17,7 @@ char LCDATA = 0x00;
 char LCDSEND = 0x00;
 
 
-void initSPI(){
+void initSPI(){				// translated from lab 3
 	UCB0CTL1 |= UCSWRST;
 
 	UCB0CTL0 |= UCCKPH|UCMSB|UCMST|UCSYNC;
@@ -28,18 +29,20 @@ void initSPI(){
 	P1SEL |= BIT5;
 	P1SEL2 |= BIT5;
 
-	P1SEL |= BIT7;
-	P1SEL2 |= BIT7;
-
 	P1SEL  |= BIT6;
 	P1SEL2 |= BIT6;
 
-	P1DIR |= BIT0;
+	P1SEL |= BIT7;
+	P1SEL2 |= BIT7;
 
-	UCB0CTL1 &= UCSWRST;
+
+
+	//P1DIR |= BIT0;
+
+	UCB0CTL1 &= ~UCSWRST;   // where forgotten squiggle was
 }
 
-void LCDinit()
+void LCDinit()     			// Captain Branchflower's
 {
 	writeCommandNibble(0x03);
 
@@ -109,19 +112,28 @@ void LCD_write_8(char byteToSend)
 
 	LCD_write_4(sendByte);
 }
-void LCD_write_4(char byteToSend){
+void LCD_write_4(char byteToSend){				// translated from lab 3
 	unsigned char sendByte = byteToSend;
-	sendByte &= 0x0f;
-	sendByte |= LCDCON;
-	sendByte &= 0x7f;
-	SPI_send(sendByte);
-	delayMicro();
-	sendByte |= 0x80;
-	SPI_send(sendByte);
-	delayMicro();
-	sendByte &= 0x7f;
-	SPI_send(sendByte);
-	delayMicro();
+
+	        sendByte &= 0x7F;
+
+	        sendByte |= LCDCON;
+
+	        SPI_send(sendByte);
+
+	        delayMilli();
+
+	        sendByte |= 0x80;
+
+	        SPI_send(sendByte);
+
+	        delayMilli();
+
+	        sendByte &= 0x7f;
+
+	        SPI_send(sendByte);
+
+	        delayMilli();
 
 }
 
@@ -145,10 +157,10 @@ void SPI_send(char byteToSend)
 }
 
 
-void delayMicro(){
+void delayMicro(){			//  delays 42 clock cycles, calculated in lab 3
 	__delay_cycles(42);
 }
-void delayMilli(){
+void delayMilli(){			//	delays 1688 clock cycles calculated in lab 3
 	__delay_cycles(1688);
 }
 void set_SS_lo(){
@@ -179,7 +191,7 @@ void writeChar( char charToWrite )
 	writeDataByte( charToWrite );
 
 }
-void createString( char string[], int stringLength )
+void createString( char string[], int stringLength )		//  consulted c2c mordan. takes the string and writes the character at that location based off of an array
 {
 
 	int i;
@@ -189,7 +201,7 @@ void createString( char string[], int stringLength )
 		writeChar( string[i] );
 	}
 }
-void scrollLCD( char string[], int stringLength )
+void scrollLCD( char string[], int stringLength )		//  shifts the characters across the lcd.
 {
 	int i = 0;
 	int tempChar = string[0];

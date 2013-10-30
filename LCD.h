@@ -1,3 +1,11 @@
+/*Author C2C Rasmussen
+ * Date Oct 28 13
+ *
+ * Declares all of the methods
+ */
+
+
+
 #ifndef LCD_H_
 #define LCD_H_
 
